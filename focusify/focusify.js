@@ -1,5 +1,6 @@
 $.fn.focusify = function(wait, color, type){
 	return this.each(function(){
+		var color = "#2ecc71";
 		switch(type) {
 			case 'border':
 				console.log("border working on..");
