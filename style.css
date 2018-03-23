@@ -1,0 +1,47 @@
+body {
+	font-family: 'IBM Plex Serif', serif;
+	padding: 20px;
+	text-align: center;
+}
+
+p {
+	font-size: 22px;
+}
+
+a {
+	text-decoration: none;
+}
+
+#countly > a {
+	color:#13b94d;
+}
+
+#github > a {
+	color:#6e5494;
+}
+
+img {
+	width: 150px;
+	height: 100px;
+}
+
+#stackoverflow > a {
+	color:#f48024;
+}
+
+#soundcloud > a {
+	color: #ff3300;
+}
+
+#vimeo > a {
+	color: #1ab7ea;
+}
+
+#linkedin > a {
+	color:#0077b5;
+}
+
+#javascript {
+	color: silver;
+	cursor: pointer;
+}
