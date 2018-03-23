@@ -1,5 +1,5 @@
 $(function() {
-	
+
 	var constants = {
 		server_url:"https://furkan.count.ly",
 		app_key:"ba551f90d219c54a0c631a064ab592f3eefe4b35"
@@ -47,7 +47,7 @@ $(function() {
 			dataType:'json'
 		})
 		.then(function(response) {
-			console.log(response);
+			$('.modal').css({"display":"none"});
 		})
 	})
 })
