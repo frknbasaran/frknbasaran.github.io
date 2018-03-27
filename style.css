@@ -13,7 +13,10 @@ a {
 #github > a {
 	color:#6e5494;
 }
-
+#bio {
+	width: 70%;
+	margin-left:15&;
+}
 #furkan {
 	width: 150px;
 	height: 100px;
