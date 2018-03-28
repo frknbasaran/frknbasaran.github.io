@@ -48,9 +48,11 @@ var continueButton = document.getElementById('continue-button');
 
 function showFeedbackPopup() {
 	document.getElementsByClassName("modal")[0].style.display = "block";
+	document.getElementsByClassName("modal-content")[0].style.display = "block";
 }
 function hideFeedbackPopup() {
 	document.getElementsByClassName("modal")[0].style.display = "none";	
+	document.getElementsByClassName("modal-content")[0].style.display = "none";
 }
 function hideSuccessPopup() {
 	document.getElementsByClassName("success-modal")[0].style.display = "none";		
