@@ -14,9 +14,6 @@ Countly.onload.push(function(){
 	var eventObject = {
 	    "key":"[CLY]_star_rating",
 		"count": 1,
-		"timestamp": timestamp(), 
-		"hour": getRandomInt(0, 23), 
-		"dow": getRandomInt(0, 6), 
 		"segmentation": {
 			"contactMe":false, 
 			"platform":"web", 
@@ -74,64 +71,37 @@ Countly.onload.push(function(){
 	function sendFeedback() {
 		eventObject["segmentation"].comment = document.getElementById('countly-feedback-comment-textarea').value;
 		eventObject["segmentation"].email = document.getElementById('contact-me-email').value;
-		// TODO: create trigger to here for [CLY]_star_rating
-		// TODO: fix the async issue
+		Countly._internals.add_cly_events(eventObject);
+		document.getElementsByClassName("success-modal")[0].style.display = "block";	
+		document.getElementsByClassName("success-modal-content")[0].style.display = "block";	
+		document.getElementsByClassName("modal")[0].style.display = "none";	
+		document.getElementsByClassName("modal-content")[0].style.display = "none";	
 	}
 
 	// event handler for countly feedback show comment area checkbox
 	// show hide comment area
-	if(showCommentCheckbox.addEventListener) 
-		showCommentCheckbox.addEventListener('change', showHideCommentArea, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(showCommentCheckbox.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		showCommentCheckbox.attachEvent('onchange', function(){ return showHideCommentArea.apply(showCommentCheckbox, [window.event])}); 
-
+	Countly._internals.add_event(showCommentCheckbox, 'change', showHideCommentArea);
+	
 	// event handler for countly feedback show comment area checkbox
 	// show hide comment area
-	if(showEmailCheckbox.addEventListener) 
-		showEmailCheckbox.addEventListener('change', showHideEmailArea, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(showEmailCheckbox.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		showEmailCheckbox.attachEvent('onchange', function(){ return showHideEmailArea.apply(showEmailCheckbox, [window.event])}); 
+	Countly._internals.add_event(showEmailCheckbox, 'change', showHideEmailArea);
 
 	// event handler for countly feedback sticky button
 	// show modal
-	if(stickyButton.addEventListener) 
-		stickyButton.addEventListener('click', showFeedbackPopup, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(stickyButton.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		countlyFeedbackStickyButton.attachEvent('onclick', function(){ return showFeedbackPopup.apply(countlyFeedbackStickyButton, [window.event])}); 		
-
+	Countly._internals.add_event(stickyButton, 'click', showFeedbackPopup);
+	
 	// event handler for countly feedback sticky button
 	// show modal
-	if(continueButton.addEventListener) 
-		continueButton.addEventListener('click', hideSuccessPopup, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(continueButton.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		continueButton.attachEvent('onclick', function(){ return hideSuccessPopup.apply(continueButton, [window.event])}); 		
+	Countly._internals.add_event(continueButton, 'click', hideSuccessPopup);
 
 	// event handler for countly feedback modal closer
 	// hide modal
-	if(modalCloseButton.addEventListener) 
-		modalCloseButton.addEventListener('click', hideFeedbackPopup, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(modalCloseButton.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		modalCloseButton.attachEvent('onclick', function() { return hideFeedbackPopup.apply(modalCloseButton, [window.event])}); 	
-
+	Countly._internals.add_event(modalCloseButton, 'click', hideFeedbackPopup);
+	
 	// event handler for countly feedback sender
 	// send feedback
-	if(sendButton.addEventListener) 
-		sendButton.addEventListener('click', sendFeedback, false);
-	// this is for IE, because it doesn't support addEventListener
-	else if(sendButton.attachEvent) 
-		// this strange part for making the keyword 'this' indicate the clicked anchor
-		sendButton.attachEvent('onclick', function() { return sendFeedback.apply(sendButton, [window.event])}); 	
-
+	Countly._internals.add_event(sendButton, 'click', sendFeedback);
+	
 	// event handler for countly feedback emotion img
 	// rate for feedback
 	for (var i = 0; i < modalEmotionImages.length; i++) {
@@ -146,11 +116,4 @@ Countly.onload.push(function(){
 			modalEmotionImages[i].currentIndex = i;
 		}
 	}
-
-    if(Countly.check_consent("star-rating")){
-        //then we can display button and popup
-        
-        //when you have the data call
-        Countly._internals.add_cly_events(eventObject);
-    }
 });
