@@ -42,10 +42,10 @@
 /* Modal Content/Box */
 .success-modal-content {
     background-color: #fefefe;
-    margin-left: 30%; /* 30% from the top and centered */
+    margin-left: calc((100% - 480px) / 2); /* 30% from the top and centered */
     margin-top: 10%; 
     border: 1px solid #888;
-    width: 40%; /* Could be more or less, depending on screen size */
+    width: 480px; /* Could be more or less, depending on screen size */
     padding-bottom: 25px;
     padding-top: 25px;
     border-radius: 5px;

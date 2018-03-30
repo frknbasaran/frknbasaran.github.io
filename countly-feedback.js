@@ -84,7 +84,7 @@ Countly.onload.push(function(){
 		modalEmotionImages[index].style.height = "57.5px";
 		modalEmotionImages[index].classList.remove("grow");
 	}
-
+	
 	function showHideCommentArea() {
 		if (document.getElementById('comment-show').checked) {
 			document.getElementById('countly-feedback-comment-textarea').style.display = "block";	
