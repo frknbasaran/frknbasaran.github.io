@@ -4,13 +4,15 @@ Countly = Countly || {};
 Countly.onload = Countly.onload || [];
 Countly.onload.push(function(){
     
-    // helper methods
-	var timestamp = function() {
-		return Math.round((new Date()).getTime() / 1000);
-	} 
+  	function addClass(ele,cls) {
+	  if (!hasClass(ele,cls)) ele.className += " "+cls;
+	}
 
-	var getRandomInt = function (min, max) {
-		return Math.floor(Math.random() * (max - min + 1)) + min;
+	function removeClass(ele,cls) {
+	  if (hasClass(ele,cls)) {
+	    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
+	    ele.className=ele.className.replace(reg,' ');
+	  }
 	}
 
 	var eventObject = {
@@ -54,13 +56,16 @@ Countly.onload.push(function(){
 	function rate(e) {
 		eventObject["segmentation"].rating = parseInt(modalEmotionImages[e.target.currentIndex].getAttribute('data-score'));
 		for (var i = 0; i < modalEmotionImages.length; i++) {
+			removeClass(modalEmotionImages[i], 'grow');
 			modalEmotionImages[i].src = 'img/' + i + '_gray.svg';
 			modalEmotionImages[i].style.width = "50px";
 			modalEmotionImages[i].style.height = "50px";
+			addClass(modalEmotionImages[i], 'grow');
 		}
 		modalEmotionImages[e.target.currentIndex].src = 'img/' + e.target.currentIndex + '_color.svg';	
 		modalEmotionImages[e.target.currentIndex].style.width = "57.5px";
 		modalEmotionImages[e.target.currentIndex].style.height = "57.5px";
+		modalEmotionImages[e.target.currentIndex].classList.remove("grow");
 	}
 	function showHideCommentArea() {
 		if (document.getElementById('comment-show').checked) {
