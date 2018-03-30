@@ -16,6 +16,19 @@ Countly.onload.push(function(){
 	    ele.className=ele.className.replace(reg,' ');
 	  }
 	}
+	function asyncForeach(array, fn, atEnd) {
+	  var at = -1;
+	  function next(shouldBreak) {
+	    if (shouldBreak || ++at == array.length) {
+	      if (atEnd) {
+	        setTimeout(atEnd);
+	      }
+	    } else {
+	      setTimeout(fn, 0, array[at], next);
+	    }
+	  }
+	  next();
+	}
 
 	var eventObject = {
 	    "key":"[CLY]_star_rating",
