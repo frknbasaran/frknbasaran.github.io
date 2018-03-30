@@ -7,11 +7,9 @@ Countly.onload.push(function(){
     function hasClass(ele,cls) {
 	  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
 	}
-
 	function addClass(ele,cls) {
 	  if (!hasClass(ele,cls)) ele.className += " "+cls;
 	}
-
 	function removeClass(ele,cls) {
 	  if (hasClass(ele,cls)) {
 	    var reg = new RegExp('(\\s|^)'+cls+'(\\s|$)');
@@ -34,7 +32,7 @@ Countly.onload.push(function(){
     }
 
 	// append required elements to body
-	document.body.innerHTML += '<div class="modal"><div class="modal-content"><div class="emotions-area"><p id="question-area">What is your opinion <br>of this page?</p><span class="emotion-first"><img class="grow rating-emotion" title="Terrible" data-score="1" src="img/0_gray.svg"></span><span class="emotion"><img title="Bad" class="grow rating-emotion" data-score="2" src="img/1_gray.svg"></span><span class="emotion"><img title="Okay" class="grow rating-emotion" data-score="3" src="img/2_gray.svg"></span><span class="emotion"><img title="Nice" class="grow rating-emotion" data-score="4" src="img/3_gray.svg"></span><span class="emotion"><img title="Great" class="grow rating-emotion" data-score="5" src="img/4_gray.svg"></span> </div><div class="comment-area"> <div class="input-wrapper"> <input id="comment-show" type="checkbox"> <label for="comment-show">Add Comment</label> <textarea id="countly-feedback-comment-textarea"></textarea> </div><div class="input-wrapper"> <input id="email-show" type="checkbox"> <label for="email-show">Contact me by e-mail</label> <input type="text" id="contact-me-email"> </div></div><div class="buttons-area"><button id="close-button">Cancel</button><button id="send-button">Submit Feedback</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div><div id="countly-feedback">Feedback</div><div class="success-modal"> <div class="success-modal-content"> <div class="icon-area"> <i class="fa fa-check fa-2x"></i> </div><div class="success-emotions-area"> <p id="question-area">Thank you.<br>We received your message.</p></div><div class="buttons-area-on-success"> <button id="continue-button">OK</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div>';
+	document.body.innerHTML += '<div class="modal"><div class="modal-content"><div class="emotions-area"><p id="question-area">What is your opinion <br>of this page?</p><span class="emotion-first"><img class="grow rating-emotion" title="Terrible" data-score="1" src="img/0_gray.svg"></span><span class="emotion"><img title="Bad" class="grow rating-emotion" data-score="2" src="img/1_gray.svg"></span><span class="emotion"><img title="Okay" class="grow rating-emotion" data-score="3" src="img/2_gray.svg"></span><span class="emotion"><img title="Nice" class="grow rating-emotion" data-score="4" src="img/3_gray.svg"></span><span class="emotion"><img title="Great" class="grow rating-emotion" data-score="5" src="img/4_gray.svg"></span> </div><div class="comment-area"> <div class="input-wrapper"> <input id="comment-show" type="checkbox"> <label for="comment-show">Add Comment</label> <textarea id="countly-feedback-comment-textarea"></textarea> </div><div class="input-wrapper"> <input id="email-show" type="checkbox"> <label for="email-show">Contact me by e-mail</label> <input type="text" id="contact-me-email"> </div></div><div class="buttons-area"><button id="close-button">Cancel</button><button id="send-button">Submit Feedback</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div><div id="countly-feedback">Feedback</div><div class="success-modal"> <div class="success-modal-content"> <div class="icon-area"> <i class="fa fa-check fa-2x"></i> </div><div class="success-emotions-area"><p id="question-area">Thank you.<br>We received your message.</p></div><div class="buttons-area-on-success"> <button id="continue-button">OK</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div>';
 
 	tippy('.rating-emotion', { delay: 100, arrow: true, arrowType: 'round', duration: 250, animation: 'scale'});
 	// countly feedback elements 
@@ -59,7 +57,8 @@ Countly.onload.push(function(){
 		document.getElementsByClassName("success-modal")[0].style.display = "none";		
 	}
 	function rate(e) {
-		eventObject["segmentation"].rating = parseInt(modalEmotionImages[e.target.currentIndex].getAttribute('data-score'));
+		var index = parseInt(e.target.dataset.score) - 1;
+		eventObject["segmentation"].rating = parseInt(modalEmotionImages[index].getAttribute('data-score'));
 		for (var i = 0; i < modalEmotionImages.length; i++) {
 			removeClass(modalEmotionImages[i], 'grow');
 			modalEmotionImages[i].src = 'img/' + i + '_gray.svg';
@@ -67,11 +66,12 @@ Countly.onload.push(function(){
 			modalEmotionImages[i].style.height = "50px";
 			addClass(modalEmotionImages[i], 'grow');
 		}
-		modalEmotionImages[e.target.currentIndex].src = 'img/' + e.target.currentIndex + '_color.svg';	
-		modalEmotionImages[e.target.currentIndex].style.width = "57.5px";
-		modalEmotionImages[e.target.currentIndex].style.height = "57.5px";
-		modalEmotionImages[e.target.currentIndex].classList.remove("grow");
+		modalEmotionImages[index].src = 'img/' + index + '_color.svg';	
+		modalEmotionImages[index].style.width = "57.5px";
+		modalEmotionImages[index].style.height = "57.5px";
+		modalEmotionImages[index].classList.remove("grow");
 	}
+
 	function showHideCommentArea() {
 		if (document.getElementById('comment-show').checked) {
 			document.getElementById('countly-feedback-comment-textarea').style.display = "block";	
@@ -120,18 +120,12 @@ Countly.onload.push(function(){
 	
 	// event handler for countly feedback emotion img
 	// rate for feedback
-	for (var i = 0; i < modalEmotionImages.length; i++) {
-		if(modalEmotionImages[i].addEventListener) {
-			modalEmotionImages[i].addEventListener('click', rate, false);
-			modalEmotionImages[i].currentIndex = i;
-		}
-		// this is for IE, because it doesn't support addEventListener
-		else if(modalEmotionImages[i].attachEvent) {
-			// this strange part for making the keyword 'this' indicate the clicked anchor
-			modalEmotionImages[i].attachEvent('onclick', function() { return rate.apply(modalCloseButton, [window.event])}); 	
-			modalEmotionImages[i].currentIndex = i;
-		}
-	}
+	asyncForeach(modalEmotionImages, function(item, done) {
+		Countly._internals.add_event(item, "click", function(e) {
+			rate(e);
+		})
+		done();
+	});
 });
 
 
