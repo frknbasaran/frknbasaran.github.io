@@ -83,7 +83,7 @@ Countly.onload.push(function(){
 		for (var i = 0; i < modalEmotionImages.length; i++) {
 			removeClass(modalEmotionImages[i], 'grow');
 			modalEmotionImages[i].src = 'img/' + i + '_gray.svg';
-			modalEmotionImages[i].style.transform = "scale(1)";
+			//modalEmotionImages[i].style.transform = "scale(1)";
 			addClass(modalEmotionImages[i], 'grow');
 		}
 		modalEmotionImages[index].src = 'img/' + index + '_color.svg';	
