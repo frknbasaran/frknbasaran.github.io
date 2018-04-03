@@ -409,7 +409,7 @@ label {
 }
 
 .grow { transition: all .2s ease-in-out; }
-.grow:hover { transform: scale(1.15); }
+.grow:hover { transform: scale(1.15) !important; }
 
 #close-button {
     background-color: white;
