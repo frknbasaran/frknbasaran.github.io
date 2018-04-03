@@ -48,8 +48,9 @@
     .modal-content {
         background-color: #fefefe;
         margin-top: 3%; 
+        box-sizing: border-box;
         border: 1px solid #888;
-        margin-left: 1.7%;
+        margin-left: 2%;
         margin-right: 2%;
         width: 96%; /* Could be more or less, depending on screen size */
         padding-bottom: 25px;
@@ -61,8 +62,9 @@
     .success-modal-content {
         background-color: #fefefe;
         margin-top: 10%; 
+        box-sizing: border-box;
         border: 1px solid #888;
-        margin-left: 1.7%;
+        margin-left: 2%;
         margin-right: 2%;
         width: 96%; /* Could be more or less, depending on screen size */
         padding-bottom: 25px;
@@ -140,6 +142,15 @@
         text-align: left;
         font-family: 'Lato', sans-serif;
         font-size: 15px;
+    }
+
+    .buttons-area {
+        margin-top: 35px;
+        font-family: 'Lato', sans-serif;
+        font-size:15px;
+        text-align: right;
+        width: 80%;
+        margin-left: 10%;
     }
 }
 
@@ -241,6 +252,15 @@
         text-align: left;
         font-family: 'Lato', sans-serif;
         font-size: 15px;
+    }
+
+    .buttons-area {
+        margin-top: 35px;
+        font-family: 'Lato', sans-serif;
+        font-size:15px;
+        text-align: right;
+        width: 70%;
+        margin-left: 15%;
     }
 }
 
@@ -436,11 +456,12 @@ label {
 }
 
 .countly-feedback-close-icon {
-    margin-right: 20px;
+    margin-right: 10px;
+    margin-top:-15px;
     float: right;
     cursor: pointer;
     font-size: lighter;
-    color:#ebebeb;
+    color:silver;
 }
 
 .emotion, .emotion-first {
@@ -453,14 +474,7 @@ label {
     height: 161px;
 }
 
-.buttons-area {
-    margin-top: 35px;
-    font-family: 'Lato', sans-serif;
-    font-size:15px;
-    text-align: right;
-    width: 70%;
-    margin-left: 15%;
-}
+
 
 .buttons-area-on-success {
     margin-top: 35px;
@@ -475,7 +489,7 @@ label {
 
 .modal-footer {
     border-top:1px solid #EBEBEB;
-    margin-top:10px;
+    margin-top:25px;
     text-align: center;
     padding-top: 25px;
 }
