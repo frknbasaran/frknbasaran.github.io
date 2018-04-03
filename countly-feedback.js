@@ -121,8 +121,20 @@ Countly.onload.push(function(){
 		} 
 	}
 	function sendFeedback() {
-		if (isValidEmail(document.getElementById('contact-me-email').value.trim())) {
-			removeClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
+		if (showEmailCheckbox.getAttribute('data-state') == 1) {
+			if(isValidEmail(document.getElementById('contact-me-email').value.trim())) {
+				removeClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
+				eventObject["segmentation"].comment = document.getElementById('countly-feedback-comment-textarea').value;
+				eventObject["segmentation"].email = document.getElementById('contact-me-email').value;
+				Countly._internals.add_cly_events(eventObject);
+				document.getElementsByClassName("success-modal")[0].style.display = "block";	
+				document.getElementsByClassName("success-modal-content")[0].style.display = "block";	
+				document.getElementsByClassName("modal")[0].style.display = "none";	
+				document.getElementsByClassName("modal-content")[0].style.display = "none";		
+			} else {
+				addClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
+			}
+		} else {
 			eventObject["segmentation"].comment = document.getElementById('countly-feedback-comment-textarea').value;
 			eventObject["segmentation"].email = document.getElementById('contact-me-email').value;
 			Countly._internals.add_cly_events(eventObject);
@@ -130,8 +142,6 @@ Countly.onload.push(function(){
 			document.getElementsByClassName("success-modal-content")[0].style.display = "block";	
 			document.getElementsByClassName("modal")[0].style.display = "none";	
 			document.getElementsByClassName("modal-content")[0].style.display = "none";		
-		} else {
-			addClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
 		}
 	}
 
