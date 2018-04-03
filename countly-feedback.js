@@ -83,13 +83,12 @@ Countly.onload.push(function(){
 		for (var i = 0; i < modalEmotionImages.length; i++) {
 			removeClass(modalEmotionImages[i], 'grow');
 			modalEmotionImages[i].src = 'img/' + i + '_gray.svg';
-			modalEmotionImages[i].style.width = "50px";
-			modalEmotionImages[i].style.height = "50px";
+			modalEmotionImages[i].style.transform = "scale(1)";
 			addClass(modalEmotionImages[i], 'grow');
 		}
 		modalEmotionImages[index].src = 'img/' + index + '_color.svg';	
-		modalEmotionImages[index].style.width = "57.5px";
-		modalEmotionImages[index].style.height = "57.5px";
+		modalEmotionImages[index].style.transform = "scale(1.2)";
+		//modalEmotionImages[index].style.transform = "scale(1.2)";
 		modalEmotionImages[index].classList.remove("grow");
 		removeClass(sendButton, 'disabled-send-button');
 		addClass(sendButton, 'send-button');
