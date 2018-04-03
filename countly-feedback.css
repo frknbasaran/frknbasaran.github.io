@@ -32,7 +32,17 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* On screens that are 600px or less, set the background color to olive */
+/* pretend auto focus on safari mobile devices*/
+@media screen and (-webkit-min-device-pixel-ratio:0) { 
+  select:focus,
+  textarea:focus,
+  input:focus {
+    font-size: 16px;
+    background: #eee;
+  }
+}
+
+/* On screens that are 414px(iPhone 6/7/8 Plus) or less, set the background color to olive */
 @media screen and (max-width: 414px) {
 /* Modal Content/Box */
     .modal-content {
@@ -123,6 +133,7 @@
 
 }
 
+/* On screens that are 414px(iPhone 6/7/8 Plus) or great, set the background color to olive */
 @media screen and (min-width: 414px) {
     /* Modal Content/Box */
     .success-modal-content {
