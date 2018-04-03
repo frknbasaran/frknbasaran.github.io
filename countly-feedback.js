@@ -4,6 +4,9 @@ Countly = Countly || {};
 Countly.onload = Countly.onload || [];
 Countly.onload.push(function(){
     
+    /*
+		Helper methods which we need 
+    */
     function hasClass(ele,cls) {
 	  return !!ele.className.match(new RegExp('(\\s|^)'+cls+'(\\s|$)'));
 	}
@@ -29,6 +32,9 @@ Countly.onload.push(function(){
 	  }
 	  next();
 	}
+	function isValidEmail(email) { 
+		return /^.+@.+\..+$/.test(email); 
+	}
 
 	var eventObject = {
 	    "key":"[CLY]_star_rating",
@@ -45,7 +51,7 @@ Countly.onload.push(function(){
     }
 
 	// append required elements to body
-	document.body.innerHTML += '<div class="modal"><div class="modal-content"><div class="emotions-area"><p id="question-area">What is your opinion <br>of this page?</p><span class="emotion-first"><img class="grow rating-emotion" title="Terrible" data-score="1" src="img/0_gray.svg"></span><span class="emotion"><img title="Bad" class="grow rating-emotion" data-score="2" src="img/1_gray.svg"></span><span class="emotion"><img title="Okay" class="grow rating-emotion" data-score="3" src="img/2_gray.svg"></span><span class="emotion"><img title="Nice" class="grow rating-emotion" data-score="4" src="img/3_gray.svg"></span><span class="emotion"><img title="Great" class="grow rating-emotion" data-score="5" src="img/4_gray.svg"></span> </div><div class="comment-area"> <div class="input-wrapper"> <input id="comment-show" type="checkbox"> <label for="comment-show">Add Comment</label> <textarea id="countly-feedback-comment-textarea"></textarea> </div><div class="input-wrapper"> <input id="email-show" type="checkbox"> <label for="email-show">Contact me by e-mail</label> <input type="text" id="contact-me-email"> </div></div><div class="buttons-area"><button id="close-button">Cancel</button><button id="send-button">Submit Feedback</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div><div id="countly-feedback">Feedback</div><div class="success-modal"> <div class="success-modal-content"> <div class="icon-area"> <i class="fa fa-check fa-2x"></i> </div><div class="success-emotions-area"><p id="question-area">Thank you.<br>We received your message.</p></div><div class="buttons-area-on-success"> <button id="continue-button">OK</button> </div><div class="modal-footer"> <img src="img/powered-by-countly.svg" id="powered-by-countly"> </div></div></div>';
+	document.body.innerHTML += '<div class="modal"><div class="modal-content"><div class="emotions-area"><p id="question-area">What is your opinion <br>of this page?</p><span class="emotion-first"><img class="grow rating-emotion" title="Terrible" data-score="1" src="img/0_gray.svg"></span><span class="emotion"><img title="Bad" class="grow rating-emotion" data-score="2" src="img/1_gray.svg"></span><span class="emotion"><img title="Okay" class="grow rating-emotion" data-score="3" src="img/2_gray.svg"></span><span class="emotion"><img title="Nice" class="grow rating-emotion" data-score="4" src="img/3_gray.svg"></span><span class="emotion"><img title="Great" class="grow rating-emotion" data-score="5" src="img/4_gray.svg"></span> </div><div class="comment-area"> <div class="input-wrapper"> <input id="comment-show" type="checkbox"> <label for="comment-show">Add comment</label> <textarea id="countly-feedback-comment-textarea"></textarea> </div><div class="input-wrapper"> <input id="email-show" type="checkbox"> <label for="email-show">Contact me by e-mail</label> <input type="text" id="contact-me-email"> </div></div><div class="buttons-area"><button id="close-button">Cancel</button><button disabled class="disabled-send-button">Submit Feedback</button> </div><div class="modal-footer"> <a href="https://count.ly" target="_new"><img src="img/powered-by-countly.svg" id="powered-by-countly"></a></div></div></div><div id="countly-feedback">Feedback</div><div class="success-modal"> <div class="success-modal-content"> <div class="icon-area"> <i class="fa fa-check fa-2x"></i> </div><div class="success-emotions-area"><p id="question-area">Thank you.<br>We received your message.</p></div><div class="buttons-area-on-success"> <button id="continue-button">Okay!</button> </div><div class="modal-footer"> <a href="https://count.ly" target="_new"><img src="img/powered-by-countly.svg" id="powered-by-countly"></a> </div></div></div>';
 
 	tippy('.rating-emotion', { delay: 100, arrow: true, arrowType: 'round', duration: 250, animation: 'scale'});
 	// countly feedback elements 
@@ -54,7 +60,7 @@ Countly.onload.push(function(){
 	var contactMeCheckbox = document.getElementById('contact-me-checkbox');
 	var contactMeEmailInput = document.getElementById('contact-me-email');
 	var modalEmotionImages = document.getElementsByClassName('rating-emotion');
-	var sendButton = document.getElementById('send-button');
+	var sendButton = document.getElementsByClassName('disabled-send-button')[0];
 	var showCommentCheckbox = document.getElementById('comment-show');
 	var showEmailCheckbox = document.getElementById('email-show');
 	var continueButton = document.getElementById('continue-button');
@@ -83,6 +89,9 @@ Countly.onload.push(function(){
 		modalEmotionImages[index].style.width = "57.5px";
 		modalEmotionImages[index].style.height = "57.5px";
 		modalEmotionImages[index].classList.remove("grow");
+		removeClass(sendButton, 'disabled-send-button');
+		addClass(sendButton, 'send-button');
+		sendButton.removeAttribute('disabled');
 	}
 	
 	function showHideCommentArea() {
@@ -95,17 +104,34 @@ Countly.onload.push(function(){
 			document.getElementById('contact-me-email').style.display = "block";	
 		} else document.getElementById('contact-me-email').style.display = "none";
 	}
-	// TODO: form verification
-	// This method on hold for now
 	function sendFeedback() {
-		eventObject["segmentation"].comment = document.getElementById('countly-feedback-comment-textarea').value;
-		eventObject["segmentation"].email = document.getElementById('contact-me-email').value;
-		Countly._internals.add_cly_events(eventObject);
-		document.getElementsByClassName("success-modal")[0].style.display = "block";	
-		document.getElementsByClassName("success-modal-content")[0].style.display = "block";	
-		document.getElementsByClassName("modal")[0].style.display = "none";	
-		document.getElementsByClassName("modal-content")[0].style.display = "none";	
+		if (isValidEmail(document.getElementById('contact-me-email').value.trim())) {
+			removeClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
+			eventObject["segmentation"].comment = document.getElementById('countly-feedback-comment-textarea').value;
+			eventObject["segmentation"].email = document.getElementById('contact-me-email').value;
+			Countly._internals.add_cly_events(eventObject);
+			document.getElementsByClassName("success-modal")[0].style.display = "block";	
+			document.getElementsByClassName("success-modal-content")[0].style.display = "block";	
+			document.getElementsByClassName("modal")[0].style.display = "none";	
+			document.getElementsByClassName("modal-content")[0].style.display = "none";		
+		} else {
+			addClass(document.getElementById('contact-me-email'), 'countly-feedback-verification-fail');
+		}
 	}
+
+	document.onkeydown = function(evt) {
+	    evt = evt || window.event;
+	    var isEscape = false;
+	    if ("key" in evt) {
+	        isEscape = (evt.key == "Escape" || evt.key == "Esc");
+	    } else {
+	        isEscape = (evt.keyCode == 27);
+	    }
+	    if (isEscape) {
+	        hideFeedbackPopup();
+	    }
+	};
+
 
 	// event handler for countly feedback show comment area checkbox
 	// show hide comment area
