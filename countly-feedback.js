@@ -51,7 +51,7 @@ Countly.onload.push(function(){
     }
 
 	// append required elements to body
-	document.body.innerHTML += '<div class="modal"><div class="modal-content"><div class="emotions-area"><p id="question-area">What is your opinion <br>of this page?</p><span class="emotion-first"><img class="grow rating-emotion" title="Terrible" data-score="1" src="img/0_gray.svg"></span><span class="emotion"><img title="Bad" class="grow rating-emotion" data-score="2" src="img/1_gray.svg"></span><span class="emotion"><img title="Okay" class="grow rating-emotion" data-score="3" src="img/2_gray.svg"></span><span class="emotion"><img title="Nice" class="grow rating-emotion" data-score="4" src="img/3_gray.svg"></span><span class="emotion"><img title="Great" class="grow rating-emotion" data-score="5" src="img/4_gray.svg"></span> </div><div class="comment-area"> <div class="input-wrapper"> <input id="comment-show" type="checkbox"> <label for="comment-show">Add comment</label> <textarea id="countly-feedback-comment-textarea"></textarea> </div><div class="input-wrapper"> <input id="email-show" type="checkbox"> <label for="email-show">Contact me by e-mail</label> <input type="text" id="contact-me-email"> </div></div><div class="buttons-area"><button id="close-button">Cancel</button><button disabled class="disabled-send-button">Submit Feedback</button> </div><div class="modal-footer"> <a href="https://count.ly" target="_new"><img src="img/powered-by-countly.svg" id="powered-by-countly"></a></div></div></div><div id="countly-feedback">Feedback</div><div class="success-modal"> <div class="success-modal-content"> <div class="icon-area"> <i class="fa fa-check fa-2x"></i> </div><div class="success-emotions-area"><p id="question-area">Thank you.<br>We received your message.</p></div><div class="buttons-area-on-success"> <button id="continue-button">Okay!</button> </div><div class="modal-footer"> <a href="https://count.ly" target="_new"><img src="img/powered-by-countly.svg" id="powered-by-countly"></a> </div></div></div>';
+	document.body.innerHTML += '';
 
 	tippy('.rating-emotion', { delay: 100, arrow: true, arrowType: 'round', duration: 250, animation: 'scale'});
 	// countly feedback elements 
@@ -61,8 +61,10 @@ Countly.onload.push(function(){
 	var contactMeEmailInput = document.getElementById('contact-me-email');
 	var modalEmotionImages = document.getElementsByClassName('rating-emotion');
 	var sendButton = document.getElementsByClassName('disabled-send-button')[0];
-	var showCommentCheckbox = document.getElementById('comment-show');
-	var showEmailCheckbox = document.getElementById('email-show');
+	var showCommentCheckbox = document.getElementById('countly-feedback-show-comment');
+	var showEmailCheckbox = document.getElementById('countly-feedback-show-email');
+	var showCommentCheckboxMask = document.getElementsByClassName('countly-feedback-show-comment-checkbox')[0];
+	var showEmailCheckboxMask = document.getElementsByClassName('countly-feedback-show-email-checkbox')[0];
 	var continueButton = document.getElementById('continue-button');
 
 	function showFeedbackPopup() {
@@ -95,14 +97,30 @@ Countly.onload.push(function(){
 	}
 	
 	function showHideCommentArea() {
-		if (document.getElementById('comment-show').checked) {
+		if (showCommentCheckbox.getAttribute('data-state') == 0) {
 			document.getElementById('countly-feedback-comment-textarea').style.display = "block";	
-		} else document.getElementById('countly-feedback-comment-textarea').style.display = "none";
+			showCommentCheckbox.setAttribute('data-state', 1);
+			removeClass(showCommentCheckboxMask, 'fa-square-o');
+			addClass(showCommentCheckboxMask, 'fa-check-square');
+		} else {
+			showCommentCheckbox.setAttribute('data-state', 0);
+			removeClass(showCommentCheckboxMask, 'fa-check-square');
+			addClass(showCommentCheckboxMask, 'fa-square-o');
+			document.getElementById('countly-feedback-comment-textarea').style.display = "none";
+		}
 	}
 	function showHideEmailArea() {
-		if (document.getElementById('email-show').checked) {
+		if (showEmailCheckbox.getAttribute('data-state') == 0) {
 			document.getElementById('contact-me-email').style.display = "block";	
-		} else document.getElementById('contact-me-email').style.display = "none";
+			showEmailCheckbox.setAttribute('data-state', 1);
+			removeClass(showEmailCheckboxMask, 'fa-square-o');
+			addClass(showEmailCheckboxMask, 'fa-check-square');
+		} else {
+			showEmailCheckbox.setAttribute('data-state', 0);
+			document.getElementById('contact-me-email').style.display = "none";	
+			removeClass(showEmailCheckboxMask, 'fa-check-square');
+			addClass(showEmailCheckboxMask, 'fa-square-o');
+		} 
 	}
 	function sendFeedback() {
 		if (isValidEmail(document.getElementById('contact-me-email').value.trim())) {
