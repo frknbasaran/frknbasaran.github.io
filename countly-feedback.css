@@ -63,20 +63,20 @@ input[type=checkbox] {
 }
 
 #countly-feedback {
-    position:absolute;
-    top:45%;
-    right:0;
-    width: 20px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    position: absolute;
+    top: 45%;
+    right: 0;
+    width: 22px;
     height: auto;
     writing-mode: tb-rl;
     background-color: #13b94d;
-    color:white;
+    color: white;
     cursor: pointer;
-    font-family: 'Lato', sans-serif;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    font-family: ‘Lato’, sans-serif;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .countly-feedback-modal-header {
