@@ -39,7 +39,9 @@
         background-color: #fefefe;
         margin-top: 3%; 
         border: 1px solid #888;
-        width: 99.4%; /* Could be more or less, depending on screen size */
+        margin-left: 2%;
+        margin-right: 2%;
+        width: 96%; /* Could be more or less, depending on screen size */
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 5px;
@@ -50,9 +52,9 @@
         background-color: #fefefe;
         margin-top: 10%; 
         border: 1px solid #888;
-        margin-left: 0.3%;
-        margin-right: 0.3%;
-        width: 99.4%; /* Could be more or less, depending on screen size */
+        margin-left: 2%;
+        margin-right: 2%;
+        width: 96%; /* Could be more or less, depending on screen size */
         padding-bottom: 25px;
         padding-top: 25px;
         border-radius: 5px;
@@ -61,7 +63,7 @@
 
     #question-area {
         font-family: 'Lato', sans-serif;
-        font-size:24px;
+        font-size:22px;
         width: 70%;
         line-height: 38px;
         margin-left: 15%;
