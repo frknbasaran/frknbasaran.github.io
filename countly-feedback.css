@@ -47,6 +47,7 @@
 /* Modal Content/Box */
     .modal-content {
         background-color: #fefefe;
+        position: relative;
         margin-top: 3%; 
         box-sizing: border-box;
         border: 1px solid #888;
@@ -60,6 +61,7 @@
 
     /* Modal Content/Box */
     .success-modal-content {
+        position: relative;
         background-color: #fefefe;
         margin-top: 10%; 
         box-sizing: border-box;
@@ -158,6 +160,7 @@
 @media screen and (min-width: 414px) {
     /* Modal Content/Box */
     .success-modal-content {
+        position: relative;
         background-color: #fefefe;
         margin-left: calc((100% - 480px) / 2); /* 30% from the top and centered */
         margin-top: 10%; 
@@ -171,6 +174,7 @@
 
     /* Modal Content/Box */
     .modal-content {
+        position: relative;
         background-color: #fefefe;
         margin-left: calc((100% - 480px) / 2);
         margin-left: -webkit-calc((100% - 480px) / 2); /* 30% from the top and centered */
@@ -456,9 +460,6 @@ label {
 }
 
 .countly-feedback-close-icon {
-    margin-right: 10px;
-    margin-top:-15px;
-    float: right;
     cursor: pointer;
     font-size: lighter;
     color:silver;
