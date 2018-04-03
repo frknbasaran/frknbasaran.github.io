@@ -439,6 +439,8 @@ label {
     margin-right: 20px;
     float: right;
     cursor: pointer;
+    font-size: lighter;
+    color:#ebebeb;
 }
 
 .emotion, .emotion-first {
