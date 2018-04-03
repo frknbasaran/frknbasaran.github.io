@@ -56,7 +56,7 @@ Countly.onload.push(function(){
 	tippy('.rating-emotion', { delay: 100, arrow: true, arrowType: 'round', duration: 250, animation: 'scale'});
 	// countly feedback elements 
 	var stickyButton = document.getElementById('countly-feedback');
-	var modalCloseButton = document.getElementById('close-button');
+	//var modalCloseButton = document.getElementById('close-button');
 	var contactMeCheckbox = document.getElementById('contact-me-checkbox');
 	var contactMeEmailInput = document.getElementById('contact-me-email');
 	var modalEmotionImages = document.getElementsByClassName('rating-emotion');
@@ -177,7 +177,7 @@ Countly.onload.push(function(){
 
 	// event handler for countly feedback modal closer
 	// hide modal
-	Countly._internals.add_event(modalCloseButton, 'click', hideFeedbackPopup);
+	//Countly._internals.add_event(modalCloseButton, 'click', hideFeedbackPopup);
 	
 	// event handler for countly feedback sender
 	// send feedback

@@ -32,7 +32,7 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
-/* pretend auto focus on safari mobile devices*/
+/* block auto focus on safari mobile devices*/
 @media screen and (-webkit-min-device-pixel-ratio:0) { 
   select:focus,
   textarea:focus,
@@ -114,6 +114,7 @@
         font-size: 13px;
         padding: 9px 15px 9px 15px;
         border:none;
+        width: 100%;
         border-radius: 3px;
         cursor: pointer;
         margin-right: 10px;
@@ -126,6 +127,7 @@
         font-size: 13px;
         padding: 9px 15px 9px 15px;
         border:none;
+        width: 100%;
         border-radius: 3px;
         cursor: pointer;
         margin-right: 10px;
