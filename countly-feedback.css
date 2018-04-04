@@ -154,6 +154,13 @@
         width: 80%;
         margin-left: 10%;
     }
+
+    .modal-footer {
+        border-top:1px solid #EBEBEB;
+        margin-top:25px;
+        text-align: center;
+        padding-top: 25px;
+    }
 }
 
 /* On screens that are 414px(iPhone 6/7/8 Plus) or great, set the background color to olive */
@@ -198,7 +205,7 @@
         width: 50px;
         height: 50px;
         display: inline-block;
-        margin-left: 20px;
+        margin-left: 15px;
         cursor: pointer;
         opacity: 0.9;
     }
@@ -250,7 +257,7 @@
     }
 
     .comment-area {
-        margin-top:20px;
+        margin-top:30px;
         width: 60%;
         margin-left:20%;
         text-align: left;
@@ -265,6 +272,13 @@
         text-align: right;
         width: 60%;
         margin-left: 20%;
+    }
+
+    .modal-footer {
+        border-top:1px solid #EBEBEB;
+        margin-top:35px;
+        text-align: center;
+        padding-top: 25px;
     }
 }
 
@@ -488,12 +502,7 @@ label {
 
 
 
-.modal-footer {
-    border-top:1px solid #EBEBEB;
-    margin-top:25px;
-    text-align: center;
-    padding-top: 25px;
-}
+
 
 .contact-me-area > .input-area {
     font-size:13px;
