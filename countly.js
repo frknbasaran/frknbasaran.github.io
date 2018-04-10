@@ -2035,4 +2035,21 @@
         hideLoader:hideLoader,
         add_cly_events:add_cly_events
     };
+
+    // call countly feedback initializer
+    Countly.enable_feedback = function() {
+        // append required styles and elements
+        document.body.innerHTML += "<div id='countly-feedback'>Feedback</div><div id='countly-iframe-wrapper'><span id='countly-feedback-close-icon'>×</span><iframe name='countly-feedback-iframe' id='countly-feedback-iframe' src='"+Countly.url+"/feedback'></iframe></div>";
+        document.head.innerHTML += '<style>@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:10%;display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;top:45%;right:0;width:22px;height:auto;writing-mode:tb-rl;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif;padding-top:10px;padding-bottom:10px}#countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;top:45%;right:0;width:22px;height:auto;writing-mode:tb-rl;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif;padding-top:10px;padding-bottom:10px}#countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';
+
+        // define element variables on js-side
+        var feedbackWrapper = document.getElementById('countly-iframe-wrapper');
+        var feedbackSticker = document.getElementById('countly-feedback');
+        var modalCloser = document.getElementById('countly-feedback-close-icon');
+        
+        // link event handlers to elements
+        Countly._internals.add_event(feedbackSticker, 'click', function(){feedbackWrapper.style.display = "block";});
+        Countly._internals.add_event(modalCloser, 'click', function(){feedbackWrapper.style.display = "none";});
+    }
+    
 }(window.Countly = window.Countly || {}));
