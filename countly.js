@@ -2037,10 +2037,28 @@
     };
 
     // call countly feedback initializer
-    Countly.enable_feedback = function() {
+    Countly.enable_feedback = function(conf) {
+        // get widget specifics
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', Countly.url + '/o/web-feedback/widget?widget_id='+conf.widget_id+'&app_key='+Countly.app_key);
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                var feedbackConf = JSON.parse(xhr.responseText);
+                document.getElementById('countly-feedback').innerHTML = feedbackConf.trigger_button_text;
+                document.getElementById('countly-feedback').className += feedbackConf.trigger_position;
+                document.getElementById('countly-feedback').style.backgroundColor = feedbackConf.trigger_bg_color;
+                document.getElementById('countly-feedback').style.color = feedbackConf.trigger_font_color;
+            }
+            else {
+                console.log('Request failed.  Returned status of ' + xhr.status);
+            }
+        };
+        xhr.send();
+
         // append required styles and elements
-        document.body.innerHTML += "<div id='countly-feedback'>Feedback</div><div id='countly-iframe-wrapper'><span id='countly-feedback-close-icon'>×</span><iframe name='countly-feedback-iframe' id='countly-feedback-iframe' src='"+Countly.url+"/feedback'></iframe></div>";
-        document.head.innerHTML += '<style>@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:10%;display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;top:45%;right:0;width:22px;height:auto;writing-mode:tb-rl;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif;padding-top:10px;padding-bottom:10px}#countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;top:45%;right:0;width:22px;height:auto;writing-mode:tb-rl;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif;padding-top:10px;padding-bottom:10px}#countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';
+        // TODO: replace url with Countly.url
+        document.body.innerHTML += "<div id='countly-feedback'>Feedback</div><div id='countly-iframe-wrapper'><span id='countly-feedback-close-icon'>×</span><iframe name='countly-feedback-iframe' id='countly-feedback-iframe' src='"+Countly.url+"/feedback?widget_id="+conf.widget_id+"&app_key="+Countly.app_key+"'></iframe></div>";
+        document.head.innerHTML += '<style>.mleft,.mright{top:25%;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:10%;display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}#countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}#countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';
 
         // define element variables on js-side
         var feedbackWrapper = document.getElementById('countly-iframe-wrapper');

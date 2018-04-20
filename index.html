@@ -1,8 +1,7 @@
 <html>
   <head>
   	 <title>Furkan Başaran - Personal Web Page</title>
-  	 <link rel="stylesheet" href="countly-feedback.css">
-	   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  	 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	   <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif" rel="stylesheet">
       <link rel="stylesheet" href="style.css">
       <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
@@ -18,7 +17,7 @@
     Countly.q = Countly.q || [];
  
     // Provide your app key that you retrieved from Countly dashboard
-    Countly.app_key = "ba551f90d219c54a0c631a064ab592f3eefe4b35";
+    Countly.app_key = "ba8372afa6ec792f3527fec8c3c8a7ec482006f0";
  
     // Provide your server IP or name. Use try.count.ly for EE trial server.
     // If you use your own server, make sure you have https enabled if you use
@@ -33,7 +32,7 @@
     Countly.q.push(['track_pageview']);
 
     //enable feedback
-    Countly.q.push(['enable_feedback']);
+    Countly.q.push(['enable_feedback',{"widget_id":"5ad9ff598f93c445f734d821"}]);
 
     // Uncomment the following line to track web heatmaps (Enterprise Edition)
     // Countly.q.push(['track_clicks']);
