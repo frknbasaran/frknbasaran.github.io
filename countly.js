@@ -2036,8 +2036,7 @@
         add_cly_events:add_cly_events
     };
 
-    // call countly feedback initializer
-    Countly.enable_feedback = function(conf) {
+      Countly.enable_feedback = function(conf) {
         // get widget specifics
         var xhr = new XMLHttpRequest();
         xhr.open('GET', Countly.url + '/o/web-feedback/widget?widget_id='+conf.widget_id+'&app_key='+Countly.app_key);
@@ -2046,8 +2045,8 @@
                 var feedbackConf = JSON.parse(xhr.responseText);
                 document.getElementById('countly-feedback').innerHTML = feedbackConf.trigger_button_text;
                 document.getElementById('countly-feedback').className += feedbackConf.trigger_position;
-                document.getElementById('countly-feedback').style.backgroundColor = feedbackConf.trigger_bg_color;
-                document.getElementById('countly-feedback').style.color = feedbackConf.trigger_font_color;
+                document.getElementById('countly-feedback').style.backgroundColor = '#'+feedbackConf.trigger_bg_color;
+                document.getElementById('countly-feedback').style.color = '#'+feedbackConf.trigger_font_color;
             }
             else {
                 console.log('Request failed.  Returned status of ' + xhr.status);
