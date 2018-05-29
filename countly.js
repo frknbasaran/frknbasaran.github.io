@@ -2059,13 +2059,13 @@
                 // create stickers for each widget in array
                 asyncForeach(enableWidgets, function(widget, done) {
                     JSON.parse(widget.target_pages).forEach(function(page) {
-                        if (page === window.location.pathname) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
+                        if (page === window.location.pathname && !widget.hide_sticker) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
                     })
                     done();
                 }, function() {
                     asyncForeach(enableWidgets, function(widget, done) {
                         JSON.parse(widget.target_pages).forEach(function(page) {
-                            if (page === window.location.pathname) {
+                            if (page === window.location.pathname && !widget.hide_sticker) {
                                 add_event(document.getElementById('countly-feedback-sticker-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";});
                                 add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";});
                             }
