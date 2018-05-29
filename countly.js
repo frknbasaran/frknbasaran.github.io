@@ -2002,6 +2002,20 @@
            loader.style.display = "none"; 
         }
     }
+
+    function asyncForeach(array, fn, atEnd) {
+      var at = -1;
+      function next(shouldBreak) {
+        if (shouldBreak || ++at == array.length) {
+          if (atEnd) {
+            setTimeout(atEnd);
+          }
+        } else {
+          setTimeout(fn, 0, array[at], next);
+        }
+      }
+      next();
+    }
     
     //expose internal methods for pluggable code to reuse them
     Countly._internals = {
@@ -2033,40 +2047,41 @@
         getToken:getToken,
         showLoader:showLoader,
         hideLoader:hideLoader,
-        add_cly_events:add_cly_events
+        add_cly_events:add_cly_events,
+        asyncForeach: asyncForeach
     };
 
-      Countly.enable_feedback = function(conf) {
-        // get widget specifics
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', Countly.url + '/o/web-feedback/widget?widget_id='+conf.widget_id+'&app_key='+Countly.app_key);
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                var feedbackConf = JSON.parse(xhr.responseText);
-                document.getElementById('countly-feedback').innerHTML = feedbackConf.trigger_button_text;
-                document.getElementById('countly-feedback').className += feedbackConf.trigger_position;
-                document.getElementById('countly-feedback').style.backgroundColor = '#'+feedbackConf.trigger_bg_color;
-                document.getElementById('countly-feedback').style.color = '#'+feedbackConf.trigger_font_color;
+    Countly.enable_feedback = function() {
+        // inject feedback styles
+        document.head.innerHTML += '<style>.mleft,.mright{top:150px;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}.countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:100px;display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}.countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';    
+        // get enable widgets by app_key
+        // define xhr object
+        var getEnableWidgetsByAppKey = new XMLHttpRequest();
+        // prepare xhr
+        getEnableWidgetsByAppKey.open('GET', Countly.url+ '/o/web-feedback/widgets?app_key='+Countly.app_key+'&is_active=true');
+        // prepare response callback 
+        getEnableWidgetsByAppKey.onload = function() {
+            if (getEnableWidgetsByAppKey.status === 200) {
+                // array of enable widgets
+                var enableWidgets = JSON.parse(getEnableWidgetsByAppKey.responseText);
+                // create stickers for each widget in array
+                Countly._internals.asyncForeach(enableWidgets, function(widget, done) {
+                    JSON.parse(widget.target_pages).forEach(function(page) {
+                        if (page === window.location.pathname) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
+                    })
+                    done();
+                }, function() {
+                    Countly._internals.asyncForeach(enableWidgets, function(widget, done) {
+                        Countly._internals.add_event(document.getElementById('countly-feedback-sticker-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";});
+                        Countly._internals.add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";});
+                        done();
+                    });
+                });
+            } else {
+                console.log('Widget list couldn\'t loaded.');
             }
-            else {
-                console.log('Request failed.  Returned status of ' + xhr.status);
-            }
-        };
-        xhr.send();
-
-        // append required styles and elements
-        // TODO: replace url with Countly.url
-        document.body.innerHTML += "<div id='countly-feedback'>Feedback</div><div id='countly-iframe-wrapper'><span id='countly-feedback-close-icon'>×</span><iframe name='countly-feedback-iframe' id='countly-feedback-iframe' src='"+Countly.url+"/feedback?widget_id="+conf.widget_id+"&app_key="+Countly.app_key+"&url="+Countly.url+"'></iframe></div>";
-        document.head.innerHTML += '<style>.mleft,.mright{top:25%;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:10%;display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}#countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}#countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}#countly-feedback{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}#countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';
-
-        // define element variables on js-side
-        var feedbackWrapper = document.getElementById('countly-iframe-wrapper');
-        var feedbackSticker = document.getElementById('countly-feedback');
-        var modalCloser = document.getElementById('countly-feedback-close-icon');
-        
-        // link event handlers to elements
-        Countly._internals.add_event(feedbackSticker, 'click', function(){feedbackWrapper.style.display = "block";});
-        Countly._internals.add_event(modalCloser, 'click', function(){feedbackWrapper.style.display = "none";});
+        }   
+        getEnableWidgetsByAppKey.send();
     }
     
 }(window.Countly = window.Countly || {}));

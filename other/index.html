@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<a href="/">Go back!</a>
+	<title>Other page - This is another page</title>
+</head>
+<body>
+<h1>Here we are!</h1>
+<script type='text/javascript'>
+// Some default pre init
+var Countly = Countly || {};
+Countly.q = Countly.q || [];
+
+// Provide your app key that you retrieved from Countly dashboard
+Countly.app_key = "ba551f90d219c54a0c631a064ab592f3eefe4b35";
+
+// Provide your server IP or name. Use try.count.ly for EE trial server.
+// If you use your own server, make sure you have https enabled if you use
+// https below.
+Countly.url = "https://furkan.count.ly"; 
+
+// Start pushing function calls to queue
+// Track sessions automatically
+Countly.q.push(['track_sessions']);
+
+//track sessions automatically
+Countly.q.push(['track_pageview']);
+
+//enable feedback
+Countly.q.push(['enable_feedback',{"widget_id":"5b06b24a7fc61b20ba4768ec"}]);
+
+// Uncomment the following line to track web heatmaps (Enterprise Edition)
+// Countly.q.push(['track_clicks']);
+
+// Uncomment the following line to track web scrollmaps (Enterprise Edition)
+// Countly.q.push(['track_scrolls']);
+
+// Load countly script asynchronously
+(function() {
+  var cly = document.createElement('script'); cly.type = 'text/javascript'; 
+  cly.async = true;
+  // Enter url of script here (see below for other option)
+  cly.src = '../countly.js';
+  cly.onload = function(){Countly.init()};
+  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+})();
+</script>
+</body>
+</html>
