@@ -5,7 +5,18 @@
 	<title>Other page - This is another page</title>
 </head>
 <body>
-<h1>Here we are!</h1>
+<h1>Here we are! It's other page!</h1>
+<p>We will see related widget popup here.</p>
+
+<br>
+<h2>Manually show feedback popup use case</h2>
+<p>
+	Just call <code>Countly.show_feedback_popup(widget_id)</code> method with <i>widget_id</i> parameter. You can get this value by click "Copy ID" button in "Feedback Widgets" screen.<br>
+	<br>
+	Just click button below and type <i>4</i> for see feedback popup.<br>
+</p>
+<br>
+<button onClick="showPrompt()" id="click_me">Click me</button>
 <script type='text/javascript'>
 // Some default pre init
 var Countly = Countly || {};
@@ -19,21 +30,8 @@ Countly.app_key = "ba551f90d219c54a0c631a064ab592f3eefe4b35";
 // https below.
 Countly.url = "https://furkan.count.ly"; 
 
-// Start pushing function calls to queue
-// Track sessions automatically
-Countly.q.push(['track_sessions']);
-
-//track sessions automatically
-Countly.q.push(['track_pageview']);
-
 //enable feedback
-Countly.q.push(['enable_feedback',{"widget_id":"5b06b24a7fc61b20ba4768ec"}]);
-
-// Uncomment the following line to track web heatmaps (Enterprise Edition)
-// Countly.q.push(['track_clicks']);
-
-// Uncomment the following line to track web scrollmaps (Enterprise Edition)
-// Countly.q.push(['track_scrolls']);
+Countly.q.push(['enable_feedback']);
 
 // Load countly script asynchronously
 (function() {
@@ -44,6 +42,16 @@ Countly.q.push(['enable_feedback',{"widget_id":"5b06b24a7fc61b20ba4768ec"}]);
   cly.onload = function(){Countly.init()};
   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
 })();
+
+function showPrompt() {
+	var typedValue = prompt("type 4 or another number:");
+	if (parseInt(typedValue) === 4) {
+		Countly.show_feedback_popup("5b0d21812057263f8558252f");
+	} else {
+		console.log("It's another number!");
+	}
+}
+
 </script>
 </body>
 </html>
