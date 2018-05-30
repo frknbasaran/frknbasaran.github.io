@@ -2045,7 +2045,7 @@
     
     Countly.enable_feedback = function() {
         // inject feedback styles
-        document.head.innerHTML += '<style>.mleft,.mright{top:150px;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}.countly-iframe-wrapper{width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:100px;display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}.countly-iframe-wrapper{width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';    
+        document.head.innerHTML += '<style>#cfbg{display:none;position:absolute;height:100%;z-index:1000;width:100%;top: 0;background-color: black;opacity: 0.5;left: 0;}.mleft,.mright{top:150px;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;box-shadow: 0 10px 11px 0 rgba(0,0,0,0.06);width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:100px;display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';    
         // get enable widgets by app_key
         // define xhr object
         var getEnableWidgetsByAppKey = new XMLHttpRequest();
@@ -2056,20 +2056,23 @@
             if (getEnableWidgetsByAppKey.status === 200) {
                 // array of enable widgets
                 var enableWidgets = JSON.parse(getEnableWidgetsByAppKey.responseText);
+                if (enableWidgets.length > 0) {
+                    document.body.innerHTML += '<div id="cfbg"></div>';
+                }
                 // create stickers for each widget in array
                 asyncForeach(enableWidgets, function(widget, done) {
                     JSON.parse(widget.target_pages).forEach(function(page) {
                         if (page === window.location.pathname && !widget.hide_sticker) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
-                    })
+                    });
                     done();
                 }, function() {
                     asyncForeach(enableWidgets, function(widget, done) {
                         JSON.parse(widget.target_pages).forEach(function(page) {
                             if (page === window.location.pathname && !widget.hide_sticker) {
-                                add_event(document.getElementById('countly-feedback-sticker-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";});
-                                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";});
+                                add_event(document.getElementById('countly-feedback-sticker-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";document.getElementById('cfbg').style.display = "block";});
+                                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
                             }
-                        })
+                        });
                         done();
                     });
                 });
