@@ -29,6 +29,10 @@
     //enable feedback
     Countly.q.push(['enable_feedback']);
 
+    Countly.q.push(['track_pageview']);
+    Countly.q.push(['track_clicks']);;
+    Countly.q.push(['track_scrolls']);;
+
     // Load countly script asynchronously
     (function() {
       var cly = document.createElement('script'); cly.type = 'text/javascript'; 

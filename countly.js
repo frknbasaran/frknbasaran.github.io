@@ -306,9 +306,10 @@
                 // widget object
                 var widget = JSON.parse(getWidget.responseText);
                 // create iframe wrapper for widget
-                document.body.innerHTML += '<div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
-                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";});
+                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
+                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
                 document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";
+                document.getElementById('cfbg').style.display = "block";
             } else {
                 console.log('Widget couldn\'t loaded.');
             }
