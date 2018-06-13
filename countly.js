@@ -299,14 +299,14 @@
         // define xhr object
         var getWidget = new XMLHttpRequest();
         // prepare xhr
-        getWidget.open('GET', ((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url)+ '/o/web-feedback/widget?app_key='+Countly.app_key+'&app_id='+Countly.app_id+'&widget_id='+id);
+        getWidget.open('GET', Countly.url+ '/o/web-feedback/widget?app_key='+Countly.app_key+'&app_id='+Countly.app_id+'&widget_id='+id);
         // prepare response callback 
         getWidget.onload = function() {
             if (getWidget.status === 200) {
                 // widget object
                 var widget = JSON.parse(getWidget.responseText);
                 // create iframe wrapper for widget
-                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url)+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&app_id='+Countly.app_id+'&url='+((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url)+'"></iframe></div>';
+                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&app_id='+Countly.app_id+'&url='+Countly.url+'"></iframe></div>';
                 add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
                 document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";
                 document.getElementById('cfbg').style.display = "block";
@@ -1706,9 +1706,9 @@
                 method = "POST";
             
             if(method === "GET")
-                xhr.open('GET', ((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url) + apiPath + "?" + data, true);
+                xhr.open('GET', Countly.url + apiPath + "?" + data, true);
             else{
-                xhr.open('POST', ((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url) + apiPath, true);
+                xhr.open('POST', Countly.url + apiPath, true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
 
@@ -2051,7 +2051,7 @@
         // define xhr object
         var getEnableWidgetsByAppKey = new XMLHttpRequest();
         // prepare xhr
-        getEnableWidgetsByAppKey.open('GET', ((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url) + '/o/web-feedback/widgets?app_key='+Countly.app_key+'&app_id='+Countly.app_id+'&is_active=true');
+        getEnableWidgetsByAppKey.open('GET', Countly.url + '/o/web-feedback/widgets?app_key='+Countly.app_key+'&app_id='+Countly.app_id+'&is_active=true');
         // prepare response callback 
         getEnableWidgetsByAppKey.onload = function() {
             if (getEnableWidgetsByAppKey.status === 200) {
@@ -2063,7 +2063,7 @@
                 // create stickers for each widget in array
                 asyncForeach(enableWidgets, function(widget, done) {
                     JSON.parse(widget.target_pages).forEach(function(page) {
-                        if (page === window.location.pathname && !widget.hide_sticker) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&app_id='+Countly.app_id+'&url='+((Countly.url == "http://localhost:6001") ? 'http://localhost:3001' : Countly.url)+'"></iframe></div>';
+                        if (page === window.location.pathname && !widget.hide_sticker) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&app_id='+Countly.app_id+'&url='+Countly.url+'"></iframe></div>';
                     });
                     done();
                 }, function() {
