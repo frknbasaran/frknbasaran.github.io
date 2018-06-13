@@ -19,19 +19,22 @@
     Countly.q = Countly.q || [];
 
     // Provide your app key that you retrieved from Countly dashboard
-    Countly.app_key = "ba551f90d219c54a0c631a064ab592f3eefe4b35";
+    Countly.app_key = "cebbb34a3f5b53580262f3fdbf1c8cfd118d6bf4";
+    Countly.app_id = "5b17a10327308fd5b0ae7a14";
 
     // Provide your server IP or name. Use try.count.ly for EE trial server.
     // If you use your own server, make sure you have https enabled if you use
     // https below.
-    Countly.url = "https://furkan.count.ly"; 
+    Countly.url = "http://localhost:6001"; 
 
     //enable feedback
     Countly.q.push(['enable_feedback']);
 
+    /*
     Countly.q.push(['track_pageview']);
     Countly.q.push(['track_clicks']);;
     Countly.q.push(['track_scrolls']);;
+    */
 
     // Load countly script asynchronously
     (function() {
