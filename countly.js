@@ -153,7 +153,6 @@
             Countly.onload = Countly.onload || [];
             Countly.ignore_visitor = ob.ignore_visitor || Countly.ignore_visitor || false;
             Countly.require_consent = ob.require_consent || Countly.require_consent || false;
-            
             if(ob.ignore_referrers && ob.ignore_referrers.constructor === Array){
                 ignoreReferrers = ob.ignore_referrers;
             }
@@ -291,32 +290,6 @@
         return false;
     };
     
-    /**
-    * Show specific widget popup by the widget id
-    * @param {string} id - id value of related feedback widget, you can get this value by click "Copy ID" button in row menu at "Feedback widgets" screen
-    */
-    Countly.show_feedback_popup = function(id) {
-        // define xhr object
-        var getWidget = new XMLHttpRequest();
-        // prepare xhr
-        getWidget.open('GET', Countly.url+ '/o/web-feedback/widget?app_key='+Countly.app_key+'&widget_id='+id);
-        // prepare response callback 
-        getWidget.onload = function() {
-            if (getWidget.status === 200) {
-                // widget object
-                var widget = JSON.parse(getWidget.responseText);
-                // create iframe wrapper for widget
-                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
-                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
-                document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";
-                document.getElementById('cfbg').style.display = "block";
-            } else {
-                console.log('Widget couldn\'t loaded.');
-            }
-        }   
-        getWidget.send();
-    }
-
     /**
     * Add consent for specific feature, meaning, user allowed to track that data (either core feature of from custom feature group)
     * @param {string|array} feature - name of the feature, possible values, "sessions","events","views","scrolls","clicks","forms","crashes","attribution","users" or customly provided through {@link Countly.group_features}
@@ -1369,6 +1342,32 @@
         if(!Countly.ignore_visitor && !hasPulse)
             heartBeat();
     };
+
+    /**
+    * Show specific widget popup by the widget id
+    * @param {string} id - id value of related feedback widget, you can get this value by click "Copy ID" button in row menu at "Feedback widgets" screen
+    */
+    Countly.show_feedback_popup = function(id) {
+        // define xhr object
+        var getWidget = new XMLHttpRequest();
+        // prepare xhr
+        getWidget.open('GET', Countly.url+ '/o/web-feedback/widget?app_key='+Countly.app_key+'&widget_id='+id);
+        // prepare response callback 
+        getWidget.onload = function() {
+            if (getWidget.status === 200) {
+                // widget object
+                var widget = JSON.parse(getWidget.responseText);
+                // create iframe wrapper for widget
+                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
+                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
+                document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";
+                document.getElementById('cfbg').style.display = "block";
+            } else {
+                console.log('Widget couldn\'t loaded.');
+            }
+        }   
+        getWidget.send();
+    }
     
     /**
     *  PRIVATE METHODS
@@ -2043,7 +2042,12 @@
       }
       next();
     }
-    
+
+    /**
+    * Show feedback popup by passed widget ids array
+    * @param {object=} configuration - required - includes "widgets" property as string array of widgets
+    * example configuration: {"widgets":["5b21581b967c4850a7818617"]}
+    **/
     Countly.enable_feedback = function(params) {
         // inject feedback styles
         document.head.innerHTML += '<style>#cfbg{display:none;position:absolute;height:100%;z-index:1000;width:100%;top: 0;background-color: black;opacity: 0.5;left: 0;}.mleft,.mright{top:150px;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;box-shadow: 0 10px 11px 0 rgba(0,0,0,0.06);width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:100px;display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';    
@@ -2084,7 +2088,7 @@
             console.info("You should provide at least one widget id as param. Read documentation for more detail. https://resources.count.ly/plugins/feedback")
         }
     }
-
+    
     //expose internal methods for pluggable code to reuse them
     Countly._internals = {
         store:store,
@@ -2118,5 +2122,4 @@
         add_cly_events:add_cly_events,
         asyncForeach: asyncForeach
     };
-    
 }(window.Countly = window.Countly || {}));
