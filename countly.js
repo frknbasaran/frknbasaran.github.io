@@ -1349,24 +1349,23 @@
     */
     Countly.show_feedback_popup = function(id) {
         // define xhr object
-        var getWidget = new XMLHttpRequest();
-        // prepare xhr
-        getWidget.open('GET', Countly.url+ '/o/web-feedback/widget?app_key='+Countly.app_key+'&widget_id='+id);
-        // prepare response callback 
-        getWidget.onload = function() {
-            if (getWidget.status === 200) {
+        sendXmlHttpRequest(Countly.url+ '/o/feedback/widget', {app_key:Countly.app_key, widget_id:id}, function(err, params, responseText){
+            if(err){
+                log("Error occurred", err);
+            }
+            
+            try {
                 // widget object
-                var widget = JSON.parse(getWidget.responseText);
+                var widget = JSON.parse(responseText); 
                 // create iframe wrapper for widget
-                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
+                document.body.innerHTML += '<div id="cfbg"></div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&device_id='+Countly.device_id+'&sdk_version='+SDK_VERSION+'"></iframe></div>';
                 add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
                 document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";
-                document.getElementById('cfbg').style.display = "block";
-            } else {
-                console.log('Widget couldn\'t loaded.');
+                document.getElementById('cfbg').style.display = "block";   
+            } catch (JSONParseError) {
+                log("JSON parse failed: " + JSONParseError);
             }
-        }   
-        getWidget.send();
+        });
     }
     
     /**
@@ -1509,7 +1508,7 @@
                 syncConsents = {};
             }
             log("Processing request", params);
-            sendXmlHttpRequest(params, function(err, params){
+            sendXmlHttpRequest(Countly.url + apiPath, params, function(err, params){
                 log("Request Finished", params, err);
                 if(err){
                     requestQueue.unshift(params);
@@ -1692,29 +1691,27 @@
     }
     
     //sending xml HTTP request
-    function sendXmlHttpRequest(params, callback) {
+    function sendXmlHttpRequest(url, params, callback) {
         try {
             log("Sending XML HTTP request");
             var xhr = window.XMLHttpRequest ? new window.XMLHttpRequest() : window.ActiveXObject ? new ActiveXObject('Microsoft.XMLHTTP') : null;
-            
-            var data = prepareParams(params);      
+            params = params || {};
+            var data = prepareParams(params);          
             var method = "GET";
             if(data.length >= 2000)
                 method = "POST";
             else if(Countly.force_post)
                 method = "POST";
-            
-            if(method === "GET")
-                xhr.open('GET', Countly.url + apiPath + "?" + data, true);
-            else{
-                xhr.open('POST', Countly.url + apiPath, true);
+            if(method === "GET") {
+                xhr.open('GET', url + "?" + data, true);
+            } else {
+                xhr.open('POST', url, true);
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             }
-
             // fallback on error
             xhr.onreadystatechange = function () {
                 if (this.readyState === 4 && this.status >= 200 && this.status < 300) {
-                    if (typeof callback === 'function') { callback(false, params); }
+                    if (typeof callback === 'function') { callback(false, params, this.responseText); }
                 } else if (this.readyState === 4) {
                     log("Failed Server XML HTTP request", this.status);
                     if (typeof callback === 'function') { callback(true, params); }
@@ -1735,7 +1732,7 @@
     function prepareParams(params){
         var str = [];
         for(var i in params){
-            str.push(i+"="+encodeURIComponent(params[i]));
+            str.push(i + "=" + encodeURIComponent(params[i]));
         }
         return str.join("&");
     }
@@ -2029,63 +2026,47 @@
         }
     }
 
-    function asyncForeach(array, fn, atEnd) {
-      var at = -1;
-      function next(shouldBreak) {
-        if (shouldBreak || ++at == array.length) {
-          if (atEnd) {
-            setTimeout(atEnd);
-          }
-        } else {
-          setTimeout(fn, 0, array[at], next);
-        }
-      }
-      next();
-    }
-
     /**
     * Show feedback popup by passed widget ids array
     * @param {object=} configuration - required - includes "widgets" property as string array of widgets
     * example configuration: {"widgets":["5b21581b967c4850a7818617"]}
     **/
-    Countly.enable_feedback = function(params) {
+    Countly.enable_feedback = function(params){
         // inject feedback styles
-        document.head.innerHTML += '<style>#cfbg{display:none;position:absolute;height:100%;z-index:1000;width:100%;top: 0;background-color: black;opacity: 0.5;left: 0;}.mleft,.mright{top:150px;width:22px;padding-top:10px;padding-bottom:10px}.mright{right:0;writing-mode:vertical-rl}.mleft{left:0;writing-mode:vertical-lr}.bleft,.bright{bottom:0;writing-mode:horizontal-tb;padding-right:10px;padding-left:10px;padding-top:3px}.bleft{left:15%}.bright{right:15%}@media screen and (max-device-width:414px){#countly-feedback-iframe{width:100%;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;box-shadow: 0 10px 11px 0 rgba(0,0,0,0.06);width:95%;margin-left:1%;box-sizing:border-box;height:600px;background:0 0;position:absolute;top:100px;display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:30px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}@media screen and (min-device-width:414px){#countly-feedback-iframe{width:480px;height:600px;border:none;background:0 0}.countly-iframe-wrapper{z-index:2000;width:480px;height:600px;background:0 0;position:absolute;top:10%;left:calc((100% - 480px)/ 2);display:none}.countly-feedback-sticker{border-top-left-radius:2px;border-bottom-left-radius:2px;position:absolute;background-color:#13b94d;color:#fff;cursor:pointer;font-family:‘Lato’,sans-serif}.countly-feedback-close-icon{right:20px;top:15px;cursor:pointer;text-decoration:none;text-align:center;width:32px,height:3px,padding: 0;color:#d6d6d6;font-style:normal;font-size:32px;font-family:Arial,Baskerville,monospace;line-height:32px;position:absolute;z-index:9999}}</style>';    
+        loadCSS(Countly.url + '/star-rating/stylesheets/countly-feedback-web.css');
         // get enable widgets by app_key
         // define xhr object
-        
         var enableWidgets = params.widgets;
 
         if (enableWidgets.length > 0) {
             
             document.body.innerHTML += '<div id="cfbg"></div>';
 
-            var getWidgets = new XMLHttpRequest();
-            getWidgets.open('GET', Countly.url+ '/o/web-feedback/multiple-widgets-by-id?app_key='+Countly.app_key+'&widgets='+JSON.stringify(params.widgets));
-            // prepare response callback 
-            getWidgets.onload = function() {
-                if (getWidgets.status === 200) {
-                    // widget object
-                    var widgets = JSON.parse(getWidgets.responseText);
-                    asyncForeach(widgets, function(widget, done) {
-                        JSON.parse(widget.target_pages).forEach(function(page) {
-                            if (page === window.location.pathname && !widget.hide_sticker) document.body.innerHTML += '<div style="color:'+((widget.trigger_font_color < 7) ? '#'+widget.trigger_font_color : widget.trigger_font_color)+";background-color:"+((widget.trigger_bg_color.length < 7) ? '#'+widget.trigger_bg_color : widget.trigger_bg_color)+'" class="countly-feedback-sticker '+widget.trigger_position+'" id="countly-feedback-sticker-'+widget._id+'">'+widget.trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widget._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widget._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widget._id+"&app_key="+Countly.app_key+'&url='+Countly.url+'"></iframe></div>';
-                        });    
-                        JSON.parse(widget.target_pages).forEach(function(page) {
-                            if (page === window.location.pathname && !widget.hide_sticker) {
-                                add_event(document.getElementById('countly-feedback-sticker-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "block";document.getElementById('cfbg').style.display = "block";});
-                                add_event(document.getElementById('countly-feedback-close-icon-'+widget._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widget._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
-                            }
-                        });
-                        done();
-                    })
-                } else {
-                    console.log('Widget couldn\'t loaded.');
+            sendXmlHttpRequest(Countly.url + '/o/feedback/multiple-widgets-by-id', {app_key:Countly.app_key, widgets:JSON.stringify(params.widgets)}, function(err, params, responseText){
+                if(err){
+                    log("Errors occurred:", err);
                 }
-            }   
-            getWidgets.send()
+                try {
+                    // widgets array
+                    var widgets = JSON.parse(responseText);
+                    for (var i = 0; i < widgets.length; i++) {
+                        var pages = JSON.parse(widgets[i].target_pages);
+                        for (var j = 0; j < pages.length; j++) {
+                            if (pages[j] === window.location.pathname && !widgets[i].hide_sticker) document.body.innerHTML += '<div style="color:'+((widgets[i].trigger_font_color < 7) ? '#'+widgets[i].trigger_font_color : widgets[i].trigger_font_color)+";background-color:"+((widgets[i].trigger_bg_color.length < 7) ? '#'+widgets[i].trigger_bg_color : widgets[i].trigger_bg_color)+'" class="countly-feedback-sticker '+widgets[i].trigger_position+'" id="countly-feedback-sticker-'+widgets[i]._id+'">'+widgets[i].trigger_button_text+'</div><div class="countly-iframe-wrapper" id="countly-iframe-wrapper-'+widgets[i]._id+'"><span class="countly-feedback-close-icon" id="countly-feedback-close-icon-'+widgets[i]._id+'">×</span><iframe name="countly-feedback-iframe" id="countly-feedback-iframe" src="'+Countly.url+"/feedback?widget_id="+widgets[i]._id+"&app_key="+Countly.app_key+'&device_id='+Countly.device_id+'&sdk_version='+SDK_VERSION+'"></iframe></div>';
+                        } 
+                        for (var k = 0; k < pages.length; k++) {
+                            if (pages[k] === window.location.pathname && !widgets[i].hide_sticker) {
+                                add_event(document.getElementById('countly-feedback-sticker-'+widgets[i]._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widgets[i-1]._id).style.display = "block";document.getElementById('cfbg').style.display = "block";});
+                                add_event(document.getElementById('countly-feedback-close-icon-'+widgets[i]._id), 'click', function(){document.getElementById('countly-iframe-wrapper-'+widgets[i-1]._id).style.display = "none";document.getElementById('cfbg').style.display = "none";});
+                            }
+                        }
+                    }    
+                } catch (JSONParseError) {
+                    log("JSON parse error: " + JSONParseError);
+                }
+            });
         } else {
-            console.info("You should provide at least one widget id as param. Read documentation for more detail. https://resources.count.ly/plugins/feedback")
+            log("You should provide at least one widget id as param. Read documentation for more detail. https://resources.count.ly/plugins/feedback")
         }
     }
     
@@ -2119,7 +2100,6 @@
         getToken:getToken,
         showLoader:showLoader,
         hideLoader:hideLoader,
-        add_cly_events:add_cly_events,
-        asyncForeach: asyncForeach
+        add_cly_events:add_cly_events
     };
 }(window.Countly = window.Countly || {}));
