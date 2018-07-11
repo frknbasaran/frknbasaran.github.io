@@ -26,7 +26,7 @@
     Countly.url = "https://furkan.count.ly"; 
 
     //enable feedback
-    Countly.q.push(['enable_feedback',{'widgets':['5b4153df30e2482c1f4519d5','5b41fd1f30e2482c1f451f9d']}]);
+    Countly.q.push(['enable_feedback',{'widgets':['5b45de65c270cd1bc8acba3b']}]);
 
     Countly.q.push(['track_pageview']);
     Countly.q.push(['track_scrolls']);
@@ -41,6 +41,10 @@
       cly.onload = function(){Countly.init()};
       var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
     })();
+
+    setTimeout(function() {
+      Countly.show_feedback_popup("5b45e9b730e2482c1f455448");
+    },5000);
     </script>
   <script src="tippy.js"></script>
 </body>
