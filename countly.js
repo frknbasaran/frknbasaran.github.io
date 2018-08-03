@@ -1429,7 +1429,7 @@
             var iframe = document.createElement("iframe");
             iframe.name = "countly-feedback-iframe";
             iframe.id = "countly-feedback-iframe";
-            iframe.src = Countly.url + "/feedback?widget_id=" + currentWidget._id + '&device_id=' + Countly.device_id + '&sdk_version=' + SDK_VERSION;
+            iframe.src = Countly.url + "/feedback?widget_id=" + currentWidget._id + '&app_key='+Countly.app_key + '&device_id=' + Countly.device_id + '&sdk_version=' + SDK_VERSION;
             // inject them to dom
             document.body.appendChild(wrapper);
             wrapper.appendChild(closeIcon);
