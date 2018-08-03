@@ -1349,7 +1349,7 @@
     */
     Countly.show_feedback_popup = function(id) {
         // define xhr object
-        sendXmlHttpRequest(Countly.url+ '/o/feedback/widget', {app_key:Countly.app_key, widget_id:id}, function(err, params, responseText){
+        sendXmlHttpRequest(Countly.url+ '/o/feedback/widget', {widget_id:id}, function(err, params, responseText){
             if(err){
                 log("Error occurred", err);
             }
@@ -1378,7 +1378,7 @@
         if (enableWidgets.length > 0) {
             document.body.innerHTML += '<div id="cfbg"></div>';
 
-            sendXmlHttpRequest(Countly.url + '/o/feedback/multiple-widgets-by-id', {app_key:Countly.app_key, widgets:JSON.stringify(params.widgets)}, function(err, params, responseText){
+            sendXmlHttpRequest(Countly.url + '/o/feedback/multiple-widgets-by-id', {widgets:JSON.stringify(params.widgets)}, function(err, params, responseText){
                 if(err){
                     log("Errors occurred:", err);
                 }
@@ -1429,7 +1429,7 @@
             var iframe = document.createElement("iframe");
             iframe.name = "countly-feedback-iframe";
             iframe.id = "countly-feedback-iframe";
-            iframe.src = Countly.url + "/feedback?widget_id=" + currentWidget._id + "&app_key=" + Countly.app_key + '&device_id=' + Countly.device_id + '&sdk_version=' + SDK_VERSION;
+            iframe.src = Countly.url + "/feedback?widget_id=" + currentWidget._id + '&device_id=' + Countly.device_id + '&sdk_version=' + SDK_VERSION;
             // inject them to dom
             document.body.appendChild(wrapper);
             wrapper.appendChild(closeIcon);
