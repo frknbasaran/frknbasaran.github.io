@@ -63,7 +63,13 @@ function triggerEventGa(name) {
 
 function triggerEventCa(name) {
 	console.log("called CA:" + name);
-	Countly.q.push("add_event", {"key":"send","count":1,"segmentation":{"category":"Analytics","label":name}});
+	Countly.q.push(['add_event',{
+		key:name, 
+		segmentation: {
+			"category":"Analytics",
+			"label": name
+		}
+	}]);
 }
 </script>
 </body>
