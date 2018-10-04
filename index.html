@@ -1,44 +1,68 @@
+<!DOCTYPE html>
 <html>
-  <head>
-  	 <title>Furkan Başaran - Personal Web Page</title>
-  	 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	   <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Serif" rel="stylesheet">
-      <link rel="stylesheet" href="style.css">
-      <link rel="stylesheet" href="font-awesome/css/fontawesome.min.css">
-  </head>
-  <body>
-  	This is Furkan.
-    <a href="/other/">Another page</a>
-    <script type='text/javascript'>
-    // Some default pre init
-    var Countly = Countly || {};
-    Countly.q = Countly.q || [];
+<head>
+	<title>Furkan Başaran</title>
+</head>
+<body>
+<button onClick="triggerEventGa('Event1')">create Event1</button>
+<br>
+<button onClick="triggerEventGa('Event2')">create Event2</button>
+<br>
+<button onClick="triggerEventGa('Event3')">create Event3</button>
+<br>
+<button onClick="triggerEventCa('Event1')">create Event1</button>
+<br>
+<button onClick="triggerEventCa('Event2')">create Event2</button>
+<br>
+<button onClick="triggerEventCa('Event3')">create Event3</button>
+<!-- Google Analytics -->
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-    // Provide your app key that you retrieved from Countly dashboard
-    Countly.app_key = "a71e426e50d669e5035d618cbff9374982065223";
-    // Provide your server IP or name. Use try.count.ly for EE trial server.
-    // If you use your own server, make sure you have https enabled if you use
-    // https below.
-    Countly.url = "https://furkan.count.ly"; 
+ga('create', 'UA-56295140-3', 'auto');
+ga('send', 'pageview');
+</script>
+<!-- End Google Analytics -->
 
-    //enable feedback
-    Countly.q.push(['enable_feedback',{'widgets':['5b890791dfc7d9562b391df8']}]);
+<!-- Countly Analytics -->
+<script type='text/javascript'>
+  
+// Some default pre init
+var Countly = Countly || {};
+Countly.q = Countly.q || [];
 
-    Countly.q.push(['track_pageview']);
-    Countly.q.push(['track_scrolls']);
-    Countly.q.push(['track_clicks']);
-    
-    // Load countly script asynchronously
-    (function() {
-      var cly = document.createElement('script'); cly.type = 'text/javascript'; 
-      cly.async = true;
-      // Enter url of script here (see below for other option)
-      cly.src = '/countly.js';
-      cly.onload = function(){Countly.init()};
-      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-    })();
+// Provide your app key that you retrieved from Countly dashboard
+Countly.app_key = "b9c22163668e967186130234ada2a924118fb713";
 
-    </script>
-  <script src="tippy.js"></script>
+// Provide your server IP or name. Use try.count.ly or us-try.count.ly 
+// or asia-try.count.ly for EE trial server.
+// If you use your own server, make sure you have https enabled if you use
+// https below.
+Countly.url = "https://furkan.count.ly"; 
+
+// Load Countly script asynchronously
+(function() {
+	var cly = document.createElement('script'); cly.type = 'text/javascript'; 
+	cly.async = true;
+	// Enter url of script here (see below for other option)
+	cly.src = 'https://cdn.jsdelivr.net/npm/countly-sdk-web@latest/lib/countly.min.js';
+	cly.onload = function(){Countly.init()};
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+})();
+</script>
+<!-- End Countly Analytics -->
+
+<script>
+function triggerEventGa(name) {
+	ga('send', 'event', 'Analytics', name, 'Test');
+}
+
+function triggerEventCa(name) {
+	Countly.q.push("add_event", {"key":"send","count":1,"segmentation":{"category":"Analytics","label":name}});
+}
+</script>
 </body>
 </html>
