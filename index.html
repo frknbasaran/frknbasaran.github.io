@@ -3,28 +3,28 @@
     <body>
         <!-- Countly Web SDK Initialization -->
         <script type="text/javascript">
-            // Some default pre init
-			var Countly = {};
-			Countly.q = Countly.q || [];
+        // Some default pre init
+	var Countly = {};
+	Countly.q = Countly.q || [];
 
-			// Provide your app key that you retrieved from Countly dashboard
-			Countly.app_key = "b9c22163668e967186130234ada2a924118fb713";
+	// Provide your app key that you retrieved from Countly dashboard
+	Countly.app_key = "b9c22163668e967186130234ada2a924118fb713";
 
-			// Provide your server IP or name. Use try.count.ly or us-try.count.ly 
-			// or asia-try.count.ly for EE trial server.
-			// If you use your own server, make sure you have https enabled if you use
-			// https below.
-			Countly.url = "https://furkan.count.ly"; 
+	// Provide your server IP or name. Use try.count.ly or us-try.count.ly 
+	// or asia-try.count.ly for EE trial server.
+	// If you use your own server, make sure you have https enabled if you use
+	// https below.
+	Countly.url = "https://furkan.count.ly"; 
 
-			// Load Countly script asynchronously
-			(function() {
-				var cly = document.createElement('script'); cly.type = 'text/javascript'; 
-				cly.async = true;
-				// Enter url of script here (see below for other option)
-				cly.src = 'https://rawgit.com/Countly/countly-sdk-web/master/lib/countly.js';
-				cly.onload = function(){Countly.init();};
-				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-			})();
+	// Load Countly script asynchronously
+	(function() {
+	var cly = document.createElement('script'); cly.type = 'text/javascript'; 
+	cly.async = true;
+	// Enter url of script here (see below for other option)
+	cly.src = 'https://rawgit.com/Countly/countly-sdk-web/master/lib/countly.js';
+	cly.onload = function(){Countly.init();};
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+	})();
         </script>
         <!-- END of Countly Web SDK Initialization -->
         <!-- Converter Library. Should inject after Countly Web SDK Initialization -->
@@ -32,16 +32,16 @@
         </script>
         <!-- END of Converter Library -->
         <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-			m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-			})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-			// just add this line
-			CountlyGAListener();
+	// just add this line
+	CountlyGAListener();
 
-			ga('create', 'UA-56295140-3', 'auto');
-			ga('send', 'pageview');
+	ga('create', 'UA-56295140-3', 'auto');
+	ga('send', 'pageview');
         </script>
         <!-- End Google Analytics -->
     </body>
