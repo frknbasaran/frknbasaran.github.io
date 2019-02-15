@@ -1,34 +1,32 @@
-<!DOCTYPE html>
 <html>
     <body>
-        <!-- Countly Web SDK Initialization -->
-        <script type="text/javascript">
+
+    </body>
+    <script type='text/javascript'>
         // Some default pre init
-	var Countly = {};
-	Countly.q = Countly.q || [];
-
-	// Provide your app key that you retrieved from Countly dashboard
-	Countly.app_key = "d2ddda0fc0254dd294e60a9e005ba7845f672f4c";
-
-	// Provide your server IP or name. Use try.count.ly or us-try.count.ly 
-	// or asia-try.count.ly for EE trial server.
-	// If you use your own server, make sure you have https enabled if you use
-	// https below.
-	Countly.url = "https://furkan.count.ly"; 
-	
-	// enable feedback	
-	Countly.q.push(['enable_feedback',{'popups':['5c08f32183dcdf72b9784687']}]);
-
-	// Load Countly script asynchronously
-	(function() {
-	var cly = document.createElement('script'); cly.type = 'text/javascript'; 
-	cly.async = true;
-	// Enter url of script here (see below for other option)
-	cly.src = 'https://rawgit.com/Countly/countly-sdk-web/master/lib/countly.js';
-	cly.onload = function(){Countly.init();};
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-	})();
-        </script>
-        <!-- END of Countly Web SDK Initialization -->
-     </body>
+        var Countly = Countly || {};
+        Countly.q = Countly.q || [];
+        // Provide your app key that you retrieved from Countly dashboard
+        Countly.app_key = "b7574af86f0f915992efdef7cf955de77d082038";
+        // Provide your server IP or name. Use try.count.ly for EE trial server.
+        // If you use your own server, make sure you have https enabled if you use
+        // https below.
+        Countly.url = "https://master.count.ly"; 
+        
+      
+          /* ATTENTION! */
+        Countly.q.push(['enable_feedback',{'popups':['5c66bdf45929853d98dbdb84']}]);
+        /* THANKS FOR YOUR ATTENTION! :) */
+      
+      
+        // Load countly script asynchronously
+        (function() {
+          var cly = document.createElement('script'); cly.type = 'text/javascript'; 
+          cly.async = true;
+          // Enter url of script here (see below for other option)
+          cly.src = '/countly.min.js';
+          cly.onload = function(){Countly.init()};
+          var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
+        })();
+    </script>
 </html>
