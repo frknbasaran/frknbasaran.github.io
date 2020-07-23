@@ -15,7 +15,9 @@
         Countly.url = "https://furkan.count.ly"; 
         Countly.remote_config = function(err, remoteConfigs) {
           if (!err) {
-            console.log(remoteConfigs);
+            if (Countly.get_remote_config('showFeedback')) {
+              Countly.show_feedback_popup('5f11db4b49f57f08d3d6a452');
+            }
           }
         };
         
