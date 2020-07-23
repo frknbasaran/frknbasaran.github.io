@@ -13,17 +13,13 @@
         // If you use your own server, make sure you have https enabled if you use
         // https below.
         Countly.url = "https://furkan.count.ly"; 
-        
         Countly.remote_config = function(err, remoteConfigs) {
           if (!err) {
             console.log(remoteConfigs);
-          } else {
-            console.log(err);
           }
         };
         
         Countly.q.push(['enable_feedback',{'popups':['5f11db4b49f57f08d3d6a452']}]);
-        
         Countly.q.push(['track_pageview']);
         Countly.q.push(['track_sessions']);
         
