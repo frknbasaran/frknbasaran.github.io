@@ -14,13 +14,15 @@
         // https below.
         Countly.url = "https://furkan.count.ly"; 
         
-      
-        /* ATTENTION! */
+        Countly.remote_config = function(err, remoteConfigs) {
+          if (!err) {
+            console.log(remoteConfigs);
+          }
+        };
+        
         Countly.q.push(['enable_feedback',{'popups':['5f11db4b49f57f08d3d6a452']}]);
-        /* THANKS FOR YOUR ATTENTION! :) */
-
+        
         Countly.q.push(['track_pageview']);
-
         Countly.q.push(['track_sessions']);
         
         Countly.q.push(['user_details', {
@@ -31,7 +33,7 @@
           "custom": {
             "balance": "-238742",
             "furkan": "basaran",
-            "key":"val"
+            "ratedAlready": false
           }
         }]);
       
