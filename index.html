@@ -14,11 +14,10 @@
         // https below.
         Countly.url = "https://furkan.count.ly"; 
         
-        Countly.remote_config = function(err, remoteConfigs) {
-          if (!err) {
-            console.log(remoteConfigs);
-          }
-        };
+        Countly.remote_config = true;
+
+        var remoteConfig = Countly.get_remote_config();
+        console.log(remoteConfig);
         
         Countly.q.push(['enable_feedback',{'popups':['5f11db4b49f57f08d3d6a452']}]);
         
