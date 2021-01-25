@@ -8,35 +8,16 @@
         var Countly = Countly || {};
         Countly.q = Countly.q || [];
         // Provide your app key that you retrieved from Countly dashboard
-        Countly.app_key = "21c8e56045d73f1a64d6485001446abf4cf03456";
+        Countly.app_key = "2ba746b867dc345d32787e31d69dc10c0bf2b45f";
         // Provide your server IP or name. Use try.count.ly for EE trial server.
         // If you use your own server, make sure you have https enabled if you use
         // https below.
         Countly.url = "https://furkan.count.ly"; 
-        Countly.remote_config = function(err, remoteConfigs) {
-          if (!err) {
-            if (Countly.get_remote_config('showFeedback')) {
-              Countly.show_feedback_popup('5f11db4b49f57f08d3d6a452');
-            }
-          }
-        };
         
-        Countly.q.push(['enable_feedback',{'popups':['5f11db4b49f57f08d3d6a452']}]);
+        Countly.q.push(['enable_feedback',{'popups':['600abc196a52e521737b2b2b']}]);
         Countly.q.push(['track_pageview']);
         Countly.q.push(['track_sessions']);
         
-        Countly.q.push(['user_details', {
-          "name": "Furkan Başaran",
-          "username": "111111111",
-          "email": "frknbasaran@gmail.com.dot",
-          "phone": "75757575775",
-          "custom": {
-            "balance": "-238742",
-            "furkan": "basaran",
-            "ratedAlready": false
-          }
-        }]);
-      
         // Load countly script asynchronously
         (function() {
           var cly = document.createElement('script'); cly.type = 'text/javascript'; 
