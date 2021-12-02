@@ -2282,7 +2282,7 @@
                 wrapper.appendChild(iframe);
 
                 add_event(window, "message", function(e) {
-                    console.log('message handled from iframe');
+                    console.log('message received from sdk');
                     var data = {};
                     try {
                         data = JSON.parse(e.data);
