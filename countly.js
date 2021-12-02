@@ -2282,6 +2282,7 @@
                 wrapper.appendChild(iframe);
 
                 add_event(window, "message", function(e) {
+                    console.log('message handled from iframe');
                     var data = {};
                     try {
                         data = JSON.parse(e.data);
