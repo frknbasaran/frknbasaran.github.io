@@ -1,53 +1,12 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>food-store</title><link href="/js/about.ee582dbc.js" rel="prefetch"><link href="/css/app.f012c7f1.css" rel="preload" as="style"><link href="/js/app.0eeab4e1.js" rel="preload" as="script"><link href="/js/chunk-vendors.42666474.js" rel="preload" as="script"><link href="/css/app.f012c7f1.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but food-store doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript>
-    <!-- <div id="app"></div> --><script src="/js/chunk-vendors.42666474.js"></script><script src="/js/app.0eeab4e1.js"></script>
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="utf-8">
+  <title>MetryBeer</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>body{background-color:#ebebeb}</style><link rel="stylesheet" href="styles.fdd74c41318c1e64.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.fdd74c41318c1e64.css"></noscript></head>
+<body>
+  <app-root></app-root>
+<script src="runtime.2c15e88d1b82e9b5.js" type="module"></script><script src="polyfills.0055c21f7fb4ed85.js" type="module"></script><script src="main.f8d6ff7e58f94f97.js" type="module"></script>
 
-
-    <script type='text/javascript'>
-        // Some default pre init
-        var Countly = Countly || {};
-        Countly.q = Countly.q || [];
-        
-        // Provide your app key that you retrieved from Countly dashboard
-        Countly.app_key = "800d5e263a26db15f438d0f983e011e4e5af51f6";
-        
-        // Provide your server IP or name. Use try.count.ly or us-try.count.ly 
-        // or asia-try.count.ly for EE trial server.
-        // If you use your own server, make sure you have https enabled if you use
-        // https below.
-        Countly.url = "https://furkan.count.ly/";
-
-        // fetch ratings widgets and show
-        // Countly.q.push(['enable_feedback', { widgets: ['61963f79b246ab921230fafb'] }]);
-
-        Countly.q.push(['track_sessions']);
-
-        //Fetch user's NPS and Survey feedbacks from the server
-        Countly.q.push(['get_available_feedback_widgets', feedbackWidgetsCallback]);
-
-        //Surveys feedback callback function
-        function feedbackWidgetsCallback(countlyPresentableFeedback, err) {
-            if (err) {
-                console.log(err);
-                return;
-            }
-            console.log(countlyPresentableFeedback, 'countly presentable feedback');
-            //The available feedback types are nps and survey, decide which one to show
-            var countlyFeedbackWidget = countlyPresentableFeedback[0];
-            
-            //Display the feedback widget to the end user 
-            Countly.present_feedback_widget(countlyFeedbackWidget);
-        }
-        
-        
-        // Load Countly script asynchronously
-        (function() {
-            var cly = document.createElement('script'); cly.type = 'text/javascript'; 
-            cly.async = true;
-            // Enter url of script here (see below for other option)
-            cly.src = './countly.js'; // Use any of the 3 methods to get Countly Web Analytics SDK here
-            cly.onload = function(){Countly.init()};
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(cly, s);
-        })();
-    </script>
-</body>
-</html>
+</body></html>
